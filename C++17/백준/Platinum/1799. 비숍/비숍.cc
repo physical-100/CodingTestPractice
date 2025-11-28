@@ -1,64 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*
-서로가 서로를 잡을 수 없는 위치에 놓을 수 있는 비숍의 최대 개수. 
-놓을 수 있는 곳 1 아닌곳 0
-비숍이 이동할 수 있는 위치 ∣x1−x2∣=∣y1−y2∣
-우대각 방향 : col - row의 값이 같음
-좌대각 방향 : cor + row의 값이 같음
-시간을 줄이기 위해 2개로 나누어 계산.
-*/
 int n;
-int board[11][11];
-int max_black, max_white;
-vector<pair<int,int>> v[2]; //각각을 ㅈ
-bool used[2][22]; 
+vector<pair<int,int>> v[2]; //black ,  white를 각각 저장
+int black_max , white_max;
+bool isused[2][22]; //대각선 방향별로 저장 => black의 값과 white의 값이 달라 하나로 해도 됨
 
-void Bishop(vector<pair<int,int>> &cells,int idx,int &result , int count) {
-    if (idx == cells.size()) {
-        result = max(result, count);
+void bishop(int color , int idx ,int &max_val ,int cnt){
+    if(idx==v[color].size()){
+        max_val = max(max_val,cnt);
         return;
     }
+    int s = v[color][idx].first + v[color][idx].second; //합
+    int d = v[color][idx].first - v[color][idx].second + 10 ;// offset을 통해 차의 부호 분리
 
-    int x = cells[idx].first;
-    int y = cells[idx].second;
-    int s = x + y;           // 좌대각
-    int d = x - y + 10;      // 우대각 (offset 10)
-
-    // 1. 현재 위치에 비숍을 놓는 경우
-    if (!used[0][s] && !used[1][d]) {
-        used[0][s] = true;
-        used[1][d] = true;
-        Bishop(cells,idx+1,result,count+1);
-        
-        used[0][s] = false;
-        used[1][d] = false;
+    if(!isused[0][s] && !isused[1][d]){ // 비숍을 놓는 경우
+        isused[0][s] =1;
+        isused[1][d] =1;
+        bishop(color,idx+1,max_val,cnt+1);
+        isused[0][s]=0;
+        isused[1][d]=0;
     }
-
-    // 2. 현재 위치에 비숍을 놓지 않는 경우
-    Bishop(cells,idx + 1,result,count);
+    bishop(color,idx+1,max_val,cnt); // 그냥 놓지 않는 경우.
+    
+        
 }
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
-
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> board[i][j];
-            if (board[i][j]) {
-                //홀수칸 짝수 칸으로 나누어 저장 
-                //연산량을 줄이기 위함
-                if((i+j)%2==0)v[0].push_back({i, j});
+    cin>>n;
+    int d;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            cin >> d;
+            if(d) {
+                if((i+j)%2==0)v[0].push_back({i,j});
                 else v[1].push_back({i,j});
             }
         }
     }
+    bishop(0,0,black_max,0);
+    bishop(1,0,white_max,0);
 
-    Bishop(v[0],0,max_black,0);
-    Bishop(v[1],0,max_white,0);
-    cout << max_black+max_white;
+    cout << black_max+white_max;
+        
     return 0;
 }
