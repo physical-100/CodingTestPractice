@@ -23,7 +23,6 @@ int ans;
 
 int dp[17][17][3];
 
-
 void func(int r, int c , int dir);
 
 int main() {
@@ -35,18 +34,51 @@ int main() {
             cin >> board[i][j];
         }
     }
-#if(0) //DP
 
-    //초기화 -> 나머지는  0으로 초기화 되어있음 
-    //  0 : -  1: | 2: \
+#if(1) //DP
+
+    //초기화 -> 나머지는  0으로 초기화 되어있음
     dp[1][2][0] = 1;
+    //  0 : -  1: | 2: \
+    
     // 이동마다 비어 있어야하는 칸의 개수가 다르다 
-    for(int i =0;i<=N)
+     for (int r = 1; r <= N; r++) {
+        for (int c = 2; c <= N; c++) {
+            // 시작점 초기값 건너뛰기 
+            if (r == 1 && c == 2) continue;
+            // 현재 칸이 벽이면 어떤 상태로도 올 수 없음
+            if (board[r][c] == 1) continue;
     
+            // 1. 가로로 도착하는 경우 (이전 상태: 가로0, 대각선2)
+            dp[r][c][0] = dp[r][c - 1][0] + dp[r][c - 1][2];
     
-    cout<< max(dp[N][N] , dp[N][N]+3);
+            // 2. 세로로 도착하는 경우 (이전 상태: 세로1, 대각선2)
+            dp[r][c][1] = dp[r - 1][c][1] + dp[r - 1][c][2];
+    
+            // 3. 대각선으로 도착하는 경우 (이전 상태: 가로0, 세로1, 대각선2)
+            if (board[r - 1][c]==0 && board[r][c - 1]==0) {
+                dp[r][c][2] = dp[r - 1][c - 1][0] + dp[r - 1][c - 1][1] + dp[r - 1][c - 1][2];
+            }
+        }
+    }
+    
+    ans  = dp[N][N][0]+dp[N][N][1]+dp[N][N][2];
+    cout<<ans<<'\n';
+
+     // for (int r = 1; r <= N; r++) {
+     //    for (int c = 1; c <= N; c++) 
+     //        {
+     //            for (int dir=0;dir<3;dir++) cout << dp[r][c][dir] ;
+     //             cout <<' ';
+     //        }
+     //    cout<<'\n';
+     // }
     return 0;
 }
+
+
+
+
 #else  //back Traking
     if (board[N][N] == 1) { // 목적지가 벽이면 갈 수 없음
         cout << 0 << "\n";
@@ -84,4 +116,6 @@ void func(int r, int c, int dir) {
         }
     }
 }
+
+
 #endif
