@@ -113,8 +113,7 @@ int main() {
         }
 
         // 목적지 도착 및 연료 충전
-        fuel -= d_dist;
-        fuel += (d_dist * 2);
+        fuel += d_dist ;
         
         passengers[target_idx].is_done = true;
         taxi_r = dest_r;
