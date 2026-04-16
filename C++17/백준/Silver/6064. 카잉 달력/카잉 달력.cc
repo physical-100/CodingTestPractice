@@ -21,7 +21,8 @@ int main() {
         cin>> m>>n>>x>>y;
         if(x==m) x=0;
         if(y==n) y=0;
-        for(int i=x;i<=lcm(m,n);i+=m){
+        int l = lcm(m,n);
+        for(int i=x;i<=l;i+=m){
             if(i==0) continue;
             if(i%n==y){
                 ans=i;
