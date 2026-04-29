@@ -3,7 +3,7 @@
 ## 📌 문제 개요
 - **문제 이름**: MEX Maximization (Easy)
 - **핵심 키워드**: MEX, Modulo Operation, Greedy, Binary Search
-- **문제 링크**: [Codeforces - MEX Maximization](https://codeforces.com/contest/...) *(링크를 실제 주소로 변경하세요)*
+- **문제 링크**: [Codeforces - MEX Maximization](https://codeforces.com/contest/2226/problem/C) *(링크를 실제 주소로 변경하세요)*
 
 ## 📖 문제 설명
 정수 배열 $a$가 주어졌을 때, 각 원소 $a_i$에 대해 $a_i = a_i \pmod{b_i}$ 연산을 수행할 수 있습니다. (이때 $b_i$는 임의의 양의 정수). 
