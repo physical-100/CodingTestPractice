@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int get_max(const vector<int>& v1, const vector<int>& v2) {
+    int mx = -1e9;
+    int idx = v1.size() - v2.size(); 
+    
+    for (int i = 0; i <= idx; i++) {
+        int tmp = 0;
+        for (int k = 0; k < v2.size(); k++) { // 짧은 배열의 크기만큼 반복
+            tmp += v1[k + i] * v2[k];
+        }
+        mx = max(mx, tmp);
+    }
+    return mx;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int t;
+    cin >> t;
+    for (int T = 1; T <= t; T++) {
+        int a, b;
+        cin >> a >> b;
+        vector<int> A(a);
+        vector<int> B(b);
+        for (int i = 0; i < a; i++) cin >> A[i];
+        for (int i = 0; i < b; i++) cin >> B[i];
+        
+        int ans = 0;
+        if (a >= b) {
+            ans = get_max(A, B);
+        } else {
+            ans = get_max(B, A);
+        }
+        
+        cout << '#' << T << ' ' << ans << '\n';  
+    }
+    return 0;
+}
